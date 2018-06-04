@@ -1,0 +1,23 @@
+{
+  "name": "fetchDataFrom42API",
+  "version": "1.0.0",
+  "description": "build HTTP server form scratch to serve data from 42 api",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lijun21/fetchDataFrom42API.git"
+  },
+  "author": "lwang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lijun21/fetchDataFrom42API/issues"
+  },
+  "homepage": "https://github.com/Lijun21/fetchDataFrom42API#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "nodemon": "^1.17.5"
+  }
+}
