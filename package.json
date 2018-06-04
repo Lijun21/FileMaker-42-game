@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Lijun21/fetchDataFrom42API#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.17.5",
+    "request": "^2.87.0"
   }
 }

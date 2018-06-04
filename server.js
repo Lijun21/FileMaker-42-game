@@ -1,13 +1,32 @@
 var express = require('express');
 var keys = require('./config');
+var bodyParser = require('body-parser');
+var request = require('request');
 
 var app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+function middleware (req, res, next){
+    var endpoint = `https://api.intra.42.fr/oauth/token?grant_type=client_credentials&client_id=${keys.clientID42}&client_secret=${keys.clientSecret42}`;
+    request.post( endpoint, (error, response, body) => {
+        const token = JSON.parse(body).access_token;
+            if (error || !token){
+                console.log('error', error);
+                res.send("There is no certain person, please enter a valid login name");
+            }else {
+                res.locals.token = token;
+                next();
+            }
+    });
+};
+
+
 
 app.get('/', (req, res) => {
     res.send(`<!DOCTYPE html>
     <html>
     <head>
-      <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
       <meta charset="utf-8">
       <title>Fill out this Form</title>
         <style>
@@ -17,7 +36,7 @@ app.get('/', (req, res) => {
         </style>
     </head>
     <body>
-        <h1>What's his or her login?</h1>
+        <h1>Enter a 42 student Login</h1>
     
         <form action="/api/login" method="post">
     
@@ -29,7 +48,48 @@ app.get('/', (req, res) => {
         </form>
     </body>
     </html>`)
-})
+});
+
+app.post('/api/login', middleware, (req, res) => {
+    var options = {
+        url: `https://api.intra.42.fr/v2/users/${req.body.login}`,
+        headers: {
+            'Authorization': `Bearer ${res.locals.token}`
+        }
+    };
+    var studentData = request.get(options, function(error, response, body){
+        if (!error && response.statusCode == 200){
+            var info = JSON.parse(body);
+            res.send(`<!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Data you need</title>
+                <style>
+                    label, input {
+                        display: block;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>This is ${info.first_name}</h1>
+                <img src = ${info.image_url}>  
+                <ul>
+                    <li>Student ID/login: ${info.id}/${info.login}</li>
+                    <li>Full Name: ${info.displayname}</li>
+                    <li>Phone: ${info.phone}</li>
+                    <li>Correction Point: ${info.correction_point}</li>
+                </ul>
+                <a href=${info.url}>More Info</a>
+            </body>
+            </html>`)
+        }else{
+            res.send('error');
+            console.log(error);
+        }
+    });
+    
+});
 
 app.listen(8000, () => {
     console.log('server started on port 8000');
