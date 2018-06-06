@@ -1,32 +1,11 @@
 var request = require('request');
 var keys = require('../config');
+var path = require('path');
 
 module.exports = (app) => {
     app.get('/', (req, res) => {
-        res.send(`<!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Fill out this Form</title>
-            <style>
-                label, input {
-                    display: block;
-                }
-            </style>
-        </head>
-        <body>
-            <h1>Enter a 42 student Login</h1>
-        
-            <form action="/api/login" method="post">
-        
-                <label for="login">Login</label>
-                <input type="text" id="login" name="login" required />
-        
-                <button>Send</button>
-        
-            </form>
-        </body>
-        </html>`)
+        // I should probably use react for fron-end??....
+        res.sendFile(path.join('public', 'home.html'));
     });
     
     app.post('/api/login', middleware42, (req, res) => {
