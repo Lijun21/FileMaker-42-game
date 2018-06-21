@@ -1,30 +1,11 @@
 var request = require('request');
 
-var postData = {
-    "fieldData": {
-        "id": "66666666",
-        "email": "6666lwang@student.42.us.org",
-        "login": "6666lwang",
-        "first_name": "6666lijun",
-        "last_name": "wang",
-        "url": "ksdf",
-        "phone": "626719858",
-        "displayname": "lijun wang66668",
-        "image_url": "ssdf",
-        "correction_point": "66668",
-        "wallet": "66668",
-        "projects": "hahhha"
-    },
-    "portalData": {}
-}
-
-//use fake SSL auth to inspect the communications between client and a server.
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-const host_URI = 'https://e1z4r1p8.42.us.org';
-const databaseName = 'FMstudentProfile';
-const login_pw = 'bGlqdW46MTIzNA==';
-const layoutName = 'studentProfile';
+const host_URI = 'https://10.114.1.8';
+const databaseName = 'Lijun_TicTacToe';
+const login_pw = 'bGlqdW46MTIzNA=='; //login:password base 64 format
+const layoutName = 'Player';
 
 function getToken(){
     var optionsGetToken = {
@@ -46,12 +27,12 @@ function getToken(){
     })
 }
 
-async function PostDataToFM() {
+module.exports = async function PostDataToFM(student_info) {
     const token = await getToken();
     var url = `${host_URI}/fmi/data/v1/databases/${databaseName}/layouts/${layoutName}/records/`;
     var optionsPostData = {
       method: 'post',
-      body: postData,
+      body: student_info,
       json: true,
       url: url,
       headers: {
@@ -59,17 +40,20 @@ async function PostDataToFM() {
           'Authorization': `Bearer ${token}`
       }
     }
-    request(optionsPostData, function (err, res, body) {
-      if (err) {
-        console.error('error posting json: ', err)
-        throw err
-      }
-      var headers = res.headers
-      var statusCode = res.statusCode
-      console.log('headers: ', headers)
-      console.log('statusCode: ', statusCode)
-      console.log('body: ', body)
+    return new Promise((resolve, reject) => {
+        request(optionsPostData, function (err, res, body) {
+            if (err) {
+              console.error('error posting json: ', err)
+              reject(err);
+            }else{
+                var headers = res.headers;
+                var statusCode = res.statusCode;
+                console.log('headers: ', headers);
+                console.log('statusCode: ', statusCode);
+                console.log('body: ', body);
+                resolve(statusCode);
+            }
+          })
     })
 }
 
-PostDataToFM();
