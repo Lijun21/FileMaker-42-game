@@ -7,6 +7,7 @@ const databaseName = 'Lijun_TicTacToe';
 const login_pw = 'bGlqdW46MTIzNA=='; //login:password base 64 format
 const layoutName = 'Player';
 
+//POST request, to get access token from FM data API
 function getToken(){
     var optionsGetToken = {
         url: `${host_URI}/fmi/data/v1/databases/${databaseName}/sessions`,
@@ -15,10 +16,10 @@ function getToken(){
             'Authorization': `Basic ${login_pw}`
         }
     };
-
     return new Promise((resolve, reject) => {
         request.post(optionsGetToken, (error, response, body) => { 
             if (error || response.statusCode !== 200 || !body){
+                console.log("error is : ", error);
                 reject(error);
             }else {
                 resolve(JSON.parse(body).response.token);
@@ -27,6 +28,8 @@ function getToken(){
     })
 }
 
+    
+//POST request, send student_info to FileMake via FM data API
 module.exports = async function PostDataToFM(student_info) {
     const token = await getToken();
     var url = `${host_URI}/fmi/data/v1/databases/${databaseName}/layouts/${layoutName}/records/`;
