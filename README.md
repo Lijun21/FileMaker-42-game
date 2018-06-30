@@ -10,11 +10,7 @@ This is a project completed for a challege for FileMaker internship. API data ma
 - [nexmo api](https://dashboard.nexmo.com/getting-started-guide) -  send message to game loser
 
 
-<<<<<<< HEAD
-### Diagram
-=======
 # Diagram
->>>>>>> 262b8a8f08b2e989167a280cbd597e7c2d1b0650
 ![diagram](res/apiDiagram.png)
 
 
