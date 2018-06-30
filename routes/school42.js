@@ -81,7 +81,7 @@ module.exports = (app) => {
     const messageContent = 'yo, I beat you up in Tic Tac Toe game!!! Hahahahahah.....';
     app.get('/message', (req, res) => {
         nexmo.message.sendSms(
-            keys.myPhoneNumber, `1${student_info.phone}`, messageContent,
+            keys.testModeNumber, `1${student_info.phone}`, messageContent,
                 (err, responseData) => {
                 if (err) {
                     console.log(err);

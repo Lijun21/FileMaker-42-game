@@ -1,19 +1,20 @@
 var request = require('request');
+const keys = require('../config');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-const host_URI = 'https://10.114.1.8';
-const databaseName = 'Lijun_TicTacToe';
-const login_pw = 'bGlqdW46MTIzNA=='; //login:password base 64 format
-const layoutName = 'Player';
+const fmHostURI = keys.fmHostURI;
+const fmFileName = keys.fmFileName;
+const fmLoginPass = keys.fmLoginPass; //login:password base 64 format
+const fmLayoutName = keys.fmLayoutName;
 
 //POST request, to get access token from FM data API
 function getToken(){
     var optionsGetToken = {
-        url: `${host_URI}/fmi/data/v1/databases/${databaseName}/sessions`,
+        url: `${fmHostURI}/fmi/data/v1/databases/${fmFileName}/sessions`,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Basic ${login_pw}`
+            'Authorization': `Basic ${fmLoginPass}`
         }
     };
     return new Promise((resolve, reject) => {
@@ -32,7 +33,7 @@ function getToken(){
 //POST request, send student_info to FileMake via FM data API
 module.exports = async function PostDataToFM(student_info) {
     const token = await getToken();
-    var url = `${host_URI}/fmi/data/v1/databases/${databaseName}/layouts/${layoutName}/records/`;
+    var url = `${fmHostURI}/fmi/data/v1/databases/${fmFileName}/layouts/${fmLayoutName}/records/`;
     var optionsPostData = {
       method: 'post',
       body: student_info,
