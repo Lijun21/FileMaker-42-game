@@ -1,7 +1,7 @@
 # FileMaker-42-TicTacToe
 Fetch data from 42 api, and post to FileMaker server, use it for FileMaker17 game app - Tic Tac Toe
 
-# Overview
+## Overview
 This is a project completed for a challege for FileMaker internship. API data manipulation written in Node.js and express with modern syntax Promise, acync, await. Tic Tac Toe game built in FileMaker 17. 
 
 ## Buit With
@@ -10,7 +10,7 @@ This is a project completed for a challege for FileMaker internship. API data ma
 - [nexmo api](https://dashboard.nexmo.com/getting-started-guide) -  send message to game loser
 
 
-# Diagram
+## Diagram
 ![diagram](res/apiDiagram.png)
 
 
