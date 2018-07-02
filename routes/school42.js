@@ -10,7 +10,7 @@ const nexmo = new Nexmo({
   });
 
 
-const student_info = new Object();
+// const student_info = new Object();
 
 module.exports = (app) => {
     app.get('/', (req, res) => {
@@ -46,14 +46,8 @@ module.exports = (app) => {
         //GET request to 42 api, fetch student info data
         var studentData = request.get(options, async function(error, response, body){
             if (!error && response.statusCode == 200){
-                var info = JSON.parse(body);   
-
-                student_info.id = info.id;
-                student_info.first_name = info.first_name;
-                student_info.last_name = info.last_name;
-                student_info.email = info.email;
-                student_info.phone = info.phone;
-                student_info.image_url = info.image_url;
+                var { id, first_name, last_name, email, phone, image_url } = JSON.parse(body);   
+                const student_info = { id, first_name, last_name, email, phone, image_url };
                 var postData = {
                     "fieldData": JSON.stringify(student_info),
                     "portalData": {}
